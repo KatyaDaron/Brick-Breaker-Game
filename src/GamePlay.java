@@ -79,6 +79,25 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
             if(ballposY < 0) {
                 ballYdir = -ballYdir;
             }
+            //check if the ball hits the bricks
+            A: for(int i = 0; i < map.map.length; i++) {
+                for (int j = 0; j < map.map[0].length; j++) {
+                    if (map.map[i][j] > 0) {
+                        Rectangle brickRect = new Rectangle(j * map.brickWidth + 80, i * map.brickHeight + 50, map.brickWidth, map.brickHeight);
+                        Rectangle ballRect = new Rectangle(ballposX, ballposY, 20,20);
+                        if(new Rectangle(ballposX, ballposY, 20, 20).intersects(brickRect)) {
+                            if(ballRect.x + 19 == brickRect.x || ballRect.x == brickRect.x + brickRect.width - 1) {
+                                ballXdir = - ballXdir;
+                            } else {
+                                ballYdir = - ballYdir;
+                            }
+                            map.map[i][j] = 0;
+                            totalBricks--;
+                            break A;
+                        }
+                    }
+                }
+            }
             //make the ball move if there's no collision
             ballposX += ballXdir;
             ballposY += ballYdir;
