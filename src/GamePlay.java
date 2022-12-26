@@ -60,6 +60,29 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         timer.start();
+        if(play) {
+            //check if the ball hits the paddle
+            if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8))) {
+                ballXdir = -2;
+                ballYdir = -ballYdir;
+            } else if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 30, 550, 40, 8))) {
+                ballXdir = (ballXdir < 0) ? -1 : 1;
+                ballYdir = -ballYdir;
+            } else if (new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX + 70, 550, 30, 8))) {
+                ballXdir = 2;
+                ballYdir = -ballYdir;
+            }
+            //check if the ball hits the borders
+            if(ballposX < 0 || ballposX > 670) {
+                ballXdir = -ballXdir;
+            }
+            if(ballposY < 0) {
+                ballYdir = -ballYdir;
+            }
+            //make the ball move if there's no collision
+            ballposX += ballXdir;
+            ballposY += ballYdir;
+        }
         repaint();
     }
 
