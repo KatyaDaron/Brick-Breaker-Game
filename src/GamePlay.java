@@ -54,7 +54,22 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.yellow);
         g.fillOval(ballposX, ballposY, 20, 20);
 
-        //g.dispose();
+        //termination of the game
+        if(totalBricks == 0) {
+            play = false;
+            g.setColor(Color.red);
+            g.setFont(new Font(Font.DIALOG,Font.BOLD, 45));
+            g.drawString("YOU WON!", 235,300);
+            g.drawString("Press ENTER to restart", 100,340);
+        }
+        if(ballposY > 620) {
+            play = false;
+            g.setColor(Color.red);
+            g.setFont(new Font(Font.DIALOG,Font.BOLD, 35));
+            g.drawString("GAME OVER!", 220, 300);
+            g.drawString("Press ENTER to restart", 140,340);
+        }
+        g.dispose();
     }
 
     @Override
@@ -93,6 +108,7 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                             }
                             map.map[i][j] = 0;
                             totalBricks--;
+                            score += 5;
                             break A;
                         }
                     }
@@ -114,12 +130,24 @@ public class GamePlay extends JPanel implements KeyListener, ActionListener {
                 moveRight();
             }
         }
-
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             if (playerX <= 5) {
                 playerX = 5;
             } else {
                 moveLeft();
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            if (!play) {
+                score = 0;
+                totalBricks = 21;
+                playerX = 310;
+                ballposX = 100;
+                ballposY = 300;
+                ballXdir = -1;
+                ballYdir = -2;
+                map = new MapGenerator(3, 7);
+                repaint();
             }
         }
     }
